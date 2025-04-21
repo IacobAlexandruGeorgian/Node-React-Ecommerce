@@ -28,6 +28,7 @@ jobs:
       - run: |
           echo "@username:registry=https://npm.pkg.github.com" >> .npmrc
           echo "//npm.pkg.github.com/:_authToken=${{ secrets.GH_PACKAGES_TOKEN }}" >> .npmrc
+      - run: cat ~/.npmrc
       - run: npm publish
         working-directory: ./build
         env:
