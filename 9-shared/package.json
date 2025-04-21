@@ -35,7 +35,6 @@
       "require": "./build/csj/index.js"
     }
   },
-  "types": "./src/index.d.ts",
   "dependencies": {
     "@elastic/elasticsearch": "^9.0.0",
     "cloudinary": "^2.6.0",
