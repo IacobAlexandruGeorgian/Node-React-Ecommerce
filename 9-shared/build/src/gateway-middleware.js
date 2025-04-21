@@ -1,22 +1,21 @@
 "use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.verifyGatewayRequest = verifyGatewayRequest;
-const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
-const error_handler_1 = require("./error-handler");
-const tokens = ['auth', 'seller', 'gig', 'search', 'buyer', 'message', 'order', 'review'];
+var tslib_1 = require("tslib");
+var jsonwebtoken_1 = tslib_1.__importDefault(require("jsonwebtoken"));
+var error_handler_1 = require("./error-handler");
+var tokens = ['auth', 'seller', 'gig', 'search', 'buyer', 'message', 'order', 'review'];
 function verifyGatewayRequest(req, _res, next) {
-    if (!req.headers?.gatewaytoken) {
+    var _a, _b;
+    if (!((_a = req.headers) === null || _a === void 0 ? void 0 : _a.gatewaytoken)) {
         throw new error_handler_1.NotAuthorizedError('Invalid request', 'verifyGatewayRequest() method: Request not coming from api gateway');
     }
-    const token = req.headers?.gatewaytoken;
+    var token = (_b = req.headers) === null || _b === void 0 ? void 0 : _b.gatewaytoken;
     if (!token) {
         throw new error_handler_1.NotAuthorizedError('Invalid request', 'verifyGatewayRequest() method: Request not coming from api gateway');
     }
     try {
-        const payload = jsonwebtoken_1.default.verify(token, '1282722b942e08c8a6cb033aa6ce850e');
+        var payload = jsonwebtoken_1.default.verify(token, '1282722b942e08c8a6cb033aa6ce850e');
         if (!tokens.includes(payload.id)) {
             throw new error_handler_1.NotAuthorizedError('Invalid request', 'verifyGatewayRequest() method: Request payload is invalid');
         }

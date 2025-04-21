@@ -1,24 +1,22 @@
 "use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.winstonLogger = void 0;
-const winston_1 = __importDefault(require("winston"));
-const winston_elasticsearch_1 = require("winston-elasticsearch");
-const esTransformer = (logData) => {
+var tslib_1 = require("tslib");
+var winston_1 = tslib_1.__importDefault(require("winston"));
+var winston_elasticsearch_1 = require("winston-elasticsearch");
+var esTransformer = function (logData) {
     return (0, winston_elasticsearch_1.ElasticsearchTransformer)(logData);
 };
-const winstonLogger = (elasticsearchNode, name, level) => {
-    const options = {
+var winstonLogger = function (elasticsearchNode, name, level) {
+    var options = {
         console: {
-            level,
+            level: level,
             handleExceptions: true,
             json: false,
             colorize: true
         },
         elasticsearch: {
-            level,
+            level: level,
             transformer: esTransformer,
             clientOpts: {
                 node: elasticsearchNode,
@@ -29,8 +27,8 @@ const winstonLogger = (elasticsearchNode, name, level) => {
             }
         }
     };
-    const esTransport = new winston_elasticsearch_1.ElasticsearchTransport(options.elasticsearch);
-    const logger = winston_1.default.createLogger({
+    var esTransport = new winston_elasticsearch_1.ElasticsearchTransport(options.elasticsearch);
+    var logger = winston_1.default.createLogger({
         exitOnError: false,
         defaultMeta: { service: name },
         transports: [new winston_1.default.transports.Console(options.console), esTransport]

@@ -1,19 +1,17 @@
 "use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.uploads = uploads;
 exports.videoUpload = videoUpload;
-const cloudinary_1 = __importDefault(require("cloudinary"));
+var tslib_1 = require("tslib");
+var cloudinary_1 = tslib_1.__importDefault(require("cloudinary"));
 function uploads(file, public_id, overwrite, invalidate) {
-    return new Promise((resolve) => {
+    return new Promise(function (resolve) {
         cloudinary_1.default.v2.uploader.upload(file, {
-            public_id,
-            overwrite,
-            invalidate,
+            public_id: public_id,
+            overwrite: overwrite,
+            invalidate: invalidate,
             resource_type: 'auto' // zip, images
-        }, (error, result) => {
+        }, function (error, result) {
             if (error)
                 resolve(error);
             resolve(result);
@@ -21,14 +19,14 @@ function uploads(file, public_id, overwrite, invalidate) {
     });
 }
 function videoUpload(file, public_id, overwrite, invalidate) {
-    return new Promise((resolve) => {
+    return new Promise(function (resolve) {
         cloudinary_1.default.v2.uploader.upload(file, {
-            public_id,
-            overwrite,
-            invalidate,
+            public_id: public_id,
+            overwrite: overwrite,
+            invalidate: invalidate,
             chunk_size: 50000,
             resource_type: 'video'
-        }, (error, result) => {
+        }, function (error, result) {
             if (error)
                 resolve(error);
             resolve(result);
