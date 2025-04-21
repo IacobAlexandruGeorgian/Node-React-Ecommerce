@@ -20,8 +20,8 @@ jobs:
       - run: npm run build
       - run: |
           echo "@username:registry=https://npm.pkg.github.com" >> .npmrc
-          echo "//npm.pkg.github.com/:_auth=$token_for_shared$ >> .npmrc
+          echo "//npm.pkg.github.com/:_auth=$GH_PACKAGES_TOKEN$ >> .npmrc
       - run: npm publish
         working-directory: ./build
         env:
-          token_for_shared: ${{ secrets.token_for_shared }}
+          token_for_shared: ${{ secrets.GH_PACKAGES_TOKEN }}
