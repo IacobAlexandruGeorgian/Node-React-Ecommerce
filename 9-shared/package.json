@@ -29,15 +29,15 @@
   },
   "exports": {
     ".": {
-      "import": "./build/esm/index.js",
-      "require": "./build/cjs/index.js"
+      "import": "./src/index.js",
+      "require": "./src/index.js"
     },
     "./icons": {
-      "import": "./build/esm/icons/index.js",
-      "require": "./build/cjs/icons/index.js"
+      "import": "./esm/icons/index.js",
+      "require": "./cjs/icons/index.js"
     }
   },
-  "types": "./build/src/index.d.ts",
+  "types": "./src/index.d.ts",
   "dependencies": {
     "@elastic/elasticsearch": "^9.0.0",
     "cloudinary": "^2.6.0",
