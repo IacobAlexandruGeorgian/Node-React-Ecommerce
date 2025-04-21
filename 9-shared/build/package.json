@@ -4,7 +4,7 @@
   "main": "index.js",
   "description": "Helpers library for Jobber app",
   "engines": {
-    "node": ">=20"
+    "node": ">=18"
   },
   "scripts": {
     "build": "npm run build:cjs && npm run build:esm && tsc --outDir build/src && node scripts/build-package.js",
@@ -33,8 +33,8 @@
       "require": "./src/index.js"
     },
     "./icons": {
-      "import": "./esm/icons/index.js",
-      "require": "./cjs/icons/index.js"
+      "import": "./src/icons/index.js",
+      "require": "./src/icons/index.js"
     }
   },
   "types": "./src/index.d.ts",
