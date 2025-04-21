@@ -1,35 +1,27 @@
-name: Publish Shared Package
 
+name: Publish
 on:
   push:
-    paths:
-      - '9-shared/**'
-    branches:
-      - main
-  workflow_dispatch:
-
+    branches: [main]
+  pull_request:
+    branches: [main]
 jobs:
   publish:
     runs-on: ubuntu-latest
     permissions:
       contents: read
       packages: write
-
     steps:
       - uses: actions/checkout@v4
-
       - uses: actions/setup-node@v3
         with:
           node-version: '20.x'
-          registry-url: 'https://npm.pkg.github.com/'
-
       - run: npm install
-        working-directory: ./9-shared
-
       - run: npm run build
-        working-directory: ./9-shared
-
+      - run: |
+          echo @IacobAlexandruGeorgian:https://npm.pkg.github.com/ > build/.npmrc
+          echo '//npm.pkg.github.com/:_authToken=${NPM_TOKEN}' >> build/.npmrc
       - run: npm publish
-        working-directory: ./9-shared
+        working-directory: ./build
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.GH_PACKAGES_TOKEN }}
+          NPM_TOKEN: ${{ secrets.GH_PACKAGES_TOKEN }}
