@@ -17,6 +17,13 @@ jobs:
         with:
           node-version: '20.x'
       - run: npm install
+      - run: |
+          if [ -z "${{ secrets.GH_PACKAGES_TOKEN }}" ]; then
+            echo "GH_PACKAGES_TOKEN is NOT set."
+          else
+            echo "GH_PACKAGES_TOKEN is set."
+          fi
+        name: Debug GH_PACKAGES_TOKEN
       - run: npm run build
       - run: |
           echo "@username:registry=https://npm.pkg.github.com" >> .npmrc
