@@ -1,3 +1,4 @@
+
 name: Publish
 on:
   push:
@@ -18,9 +19,9 @@ jobs:
       - run: npm install
       - run: npm run build
       - run: |
-          echo @IacobAlexandruGeorgian:https://npm.pkg.github.com/ > build/.npmrc
-          echo '//npm.pkg.github.com/:_authToken=${NPM_TOKEN}' >> build/.npmrc
+          echo "@username:registry=https://npm.pkg.github.com" >> .npmrc
+          echo "//npm.pkg.github.com/:_auth=$token_for_shared$ >> .npmrc
       - run: npm publish
         working-directory: ./build
         env:
-          NPM_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          token_for_shared: ${{ secrets.token_for_shared }}
