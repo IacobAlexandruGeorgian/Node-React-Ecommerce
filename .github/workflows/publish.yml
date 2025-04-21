@@ -8,8 +8,6 @@ on:
 jobs:
   publish:
     runs-on: ubuntu-latest
-    env:
-      NPM_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     permissions:
       contents: read
       packages: write
@@ -22,6 +20,8 @@ jobs:
       - run: npm run build
       - run: |
           echo "@username:registry=https://npm.pkg.github.com" >> .npmrc
-          echo "//npm.pkg.github.com/:_auth=${{ secrets.GITHUB_TOKEN }}" >> .npmrc
+          echo "//npm.pkg.github.com/:_auth=$token_for_shared$ >> .npmrc
       - run: npm publish
         working-directory: ./build
+        env:
+          token_for_shared: ${{ secrets.token_for_shared }}
