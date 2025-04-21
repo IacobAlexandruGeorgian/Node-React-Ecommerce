@@ -1,36 +1,39 @@
 
-name: Publish
+name: Publish Shared Package
+
 on:
   push:
-    branches: [main]
-  pull_request:
-    branches: [main]
+    paths:
+      - '9-shared/**'
+    branches:
+      - main
+  workflow_dispatch:
+
 jobs:
   publish:
     runs-on: ubuntu-latest
     permissions:
       contents: read
       packages: write
+
     steps:
       - uses: actions/checkout@v4
+
       - uses: actions/setup-node@v3
         with:
           node-version: '20.x'
+          registry-url: 'https://npm.pkg.github.com/'
+
       - run: npm install
-      - run: |
-          if [ -z "${{ secrets.GH_PACKAGES_TOKEN }}" ]; then
-            echo "GH_PACKAGES_TOKEN is NOT set."
-          else
-            echo "GH_PACKAGES_TOKEN is set."
-          fi
-        name: Debug GH_PACKAGES_TOKEN
+        working-directory: ./9-shared
+
       - run: npm run build
-      - run: |
-          echo "@username:registry=https://npm.pkg.github.com" >> .npmrc
-          echo "//npm.pkg.github.com/:_authToken=${{ secrets.GITHUB_TOKEN }}" >> .npmrc
-          cat .npmrc  # Print the contents to verify it's correct
-      - run: printenv
+        working-directory: ./9-shared
+
+      - run: echo "//npm.pkg.github.com/:_authToken=${{ secrets.GH_PACKAGES_TOKEN }}" >> ~/.npmrc
+        name: Authenticate with GitHub Packages
+
       - run: npm publish
-        working-directory: ./build
+        working-directory: ./9-shared
         env:
-          token_for_shared: ${{ secrets.GITHUB_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.GH_PACKAGES_TOKEN }}
