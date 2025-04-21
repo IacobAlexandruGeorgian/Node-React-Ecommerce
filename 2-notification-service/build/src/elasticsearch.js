@@ -12,7 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.checkConnection = checkConnection;
 const elasticsearch_1 = require("@elastic/elasticsearch");
 const config_1 = require("./config");
-const shared_1 = require("@iacobalexandrugeorgian/shared");
+const shared_1 = require("../../node_modules/@iacobalexandrugeorgian/shared");
 const log = (0, shared_1.winstonLogger)(`${config_1.config.ELASTIC_SEARCH_URL}`, 'notificationElasticSearchServer', 'debug');
 const elasticSearchClient = new elasticsearch_1.Client({
     node: `${config_1.config.ELASTIC_SEARCH_URL}`
