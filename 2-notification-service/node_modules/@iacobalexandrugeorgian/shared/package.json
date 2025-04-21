@@ -1,8 +1,8 @@
 {
   "version": "0.0.1",
   "license": "MIT",
-  "main": "build/cjs/index.js",
-  "module": "build/esm/index.js",
+  "main": "build/src/index.js",
+  "module": "build/src/index.js",
   "types": "build/src/index.d.ts",
   "description": "Helpers library for Jobber app",
   "engines": {
