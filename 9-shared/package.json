@@ -33,8 +33,8 @@
       "require": "./src/index.js"
     },
     "./icons": {
-      "import": "./esm/icons/index.js",
-      "require": "./cjs/icons/index.js"
+      "import": "./src/icons/index.js",
+      "require": "./src/icons/index.js"
     }
   },
   "types": "./src/index.d.ts",
