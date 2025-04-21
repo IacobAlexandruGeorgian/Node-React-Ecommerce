@@ -15,7 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.start = start;
 require("express-async-errors");
 const http_1 = __importDefault(require("http"));
-const shared_1 = require("../../node_modules/@iacobalexandrugeorgian/shared");
+const shared_1 = require("@iacobalexandrugeorgian/shared");
 const config_1 = require("./config");
 const routes_1 = require("./routes");
 const elasticsearch_1 = require("./elasticsearch");
