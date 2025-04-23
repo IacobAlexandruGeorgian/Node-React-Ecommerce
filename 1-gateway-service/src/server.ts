@@ -8,9 +8,10 @@ import hpp from "hpp";
 import compression from "compression";
 import { StatusCodes } from "http-status-codes";
 import http from "http";
+import { config } from "@gateway/config";
 
 const SERVER_PORT = 4000;
-const log: Logger = winstonLogger('http://localhost:9200', 'apiGatewayServer', 'debug');
+const log: Logger = winstonLogger(`${config.ELASTIC_SEARCH_URL}`, 'apiGatewayServer', 'debug');
 
 export class GatewayServer {
   private app: Application;
@@ -33,16 +34,16 @@ export class GatewayServer {
     app.use(
       cookieSession({
         name: 'session',
-        keys: [],
+        keys: [`${config.SECRET_KEY_ONE}`, `${config.SECRET_KEY_TWO}`],
         maxAge: 24 * 7 * 3600000,
-        secure: false // update with value from config
+        secure: config.NODE_ENV ! == 'developmemt' // update with value from config
         // sameSite: none
       })
     );
     app.use(hpp());
     app.use(helmet());
     app.use(cors({
-      origin: '',
+      origin: config.CLIENT_URL,
       credentials: true,
       methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS']
     }));

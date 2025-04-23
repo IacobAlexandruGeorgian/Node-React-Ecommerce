@@ -31,8 +31,8 @@
   },
   "exports": {
     ".": {
-      "import": "./build/src/index.js",
-      "require": "./build/src/index.js"
+      "import": "./build/esm/index.js",
+      "require": "./build/cjs/index.js"
     },
     "./icons": {
       "import": "./src/icons/index.js",
