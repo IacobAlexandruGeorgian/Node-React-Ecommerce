@@ -19,6 +19,8 @@ const shared_1 = require("@iacobalexandrugeorgian/shared");
 const config_1 = require("./config");
 const routes_1 = require("./routes");
 const elasticsearch_1 = require("./elasticsearch");
+const connection_1 = require("./queues/connection");
+const email_consumer_1 = require("./queues/email.consumer");
 const SERVER_PORT = 4001;
 const log = (0, shared_1.winstonLogger)(`${config_1.config.ELASTIC_SEARCH_URL}`, 'notificationServer', 'debug');
 function start(app) {
@@ -29,6 +31,9 @@ function start(app) {
 }
 function startQueues() {
     return __awaiter(this, void 0, void 0, function* () {
+        const emailChannel = yield (0, connection_1.createConnection)();
+        yield (0, email_consumer_1.consumeAuthEmailMessages)(emailChannel);
+        yield (0, email_consumer_1.consumeOrderEmailMessages)(emailChannel);
     });
 }
 function startElasticSearch() {

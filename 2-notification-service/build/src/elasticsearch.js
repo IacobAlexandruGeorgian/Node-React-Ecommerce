@@ -15,7 +15,11 @@ const config_1 = require("./config");
 const shared_1 = require("@iacobalexandrugeorgian/shared");
 const log = (0, shared_1.winstonLogger)(`${config_1.config.ELASTIC_SEARCH_URL}`, 'notificationElasticSearchServer', 'debug');
 const elasticSearchClient = new elasticsearch_1.Client({
-    node: `${config_1.config.ELASTIC_SEARCH_URL}`
+    node: `${config_1.config.ELASTIC_SEARCH_URL}`,
+    auth: {
+        username: 'elastic', // replace with your Elasticsearch username
+        password: 'admin1234' // replace with your Elasticsearch password
+    }
 });
 function checkConnection() {
     return __awaiter(this, void 0, void 0, function* () {

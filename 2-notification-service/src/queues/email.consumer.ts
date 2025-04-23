@@ -3,7 +3,8 @@ import { IEmailLocals, winstonLogger } from '@iacobalexandrugeorgian/shared';
 import { Channel, ConsumeMessage } from 'amqplib';
 import { Logger } from 'winston';
 import { createConnection } from '@notifications/queues/connection';
-import { sendEmail } from '@notifications/queues/mail.transport';
+import { sendEmail } from './mail.transport';
+
 
 const log: Logger = winstonLogger(`${config.ELASTIC_SEARCH_URL}`, 'emailConsumer', 'debug');
 
@@ -29,7 +30,6 @@ async function consumeAuthEmailMessages(channel: Channel): Promise<void> {
         otp
       };
       await sendEmail(template, receiverEmail, locals);
-      channel.ack(msg!);
     });
   } catch (error) {
     log.log('error', 'NotificationService EmailConsumer consumeAuthEmailMessages() method error:', error);
