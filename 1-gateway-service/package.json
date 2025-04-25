@@ -21,7 +21,7 @@
   "type": "commonjs",
   "dependencies": {
     "@elastic/elasticsearch": "^9.0.0",
-    "@iacobalexandrugeorgian/shared": "npm:@iacobalexandrugeorgian/shared@^0.0.2",
+    "@iacobalexandrugeorgian/shared": "npm:@iacobalexandrugeorgian/shared@^0.0.3",
     "axios": "^1.8.4",
     "bcrypt": "^5.1.1",
     "compression": "^1.8.0",

@@ -7,7 +7,11 @@ import { Logger } from 'winston';
 const log: Logger = winstonLogger(`${config.ELASTIC_SEARCH_URL}`, 'authElasticSearchServer', 'debug');
 
 const elasticSearchClient = new Client({
-  node: `${config.ELASTIC_SEARCH_URL}`
+  node: `${config.ELASTIC_SEARCH_URL}`,
+  auth: {
+    username: 'elastic', // or your configured username
+    password: 'admin1234'
+  }
 });
 
 async function checkConnection(): Promise<void> {

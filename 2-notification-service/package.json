@@ -41,7 +41,7 @@
   },
   "dependencies": {
     "@elastic/elasticsearch": "^8.13.0",
-    "@iacobalexandrugeorgian/shared": "npm:@iacobalexandrugeorgian/shared@^0.0.2",
+    "@iacobalexandrugeorgian/shared": "npm:@iacobalexandrugeorgian/shared@^0.0.3",
     "amqplib": "^0.10.7",
     "dotenv": "^16.5.0",
     "ejs": "^3.1.10",
