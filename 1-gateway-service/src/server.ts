@@ -13,7 +13,7 @@ import { elasticSearch } from "@gateway/elasticsearch";
 import { appRoutes } from "@gateway/routes";
 import { axiosAuthInstance } from "./services/api/auth.service";
 
-const SERVER_PORT = 4004;
+const SERVER_PORT = 4001;
 const log: Logger = winstonLogger(`${config.ELASTIC_SEARCH_URL}`, 'apiGatewayServer', 'debug');
 
 export class GatewayServer {
