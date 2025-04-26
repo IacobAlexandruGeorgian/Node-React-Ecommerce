@@ -19,9 +19,7 @@ const loginSchema: ObjectSchema = Joi.object().keys({
     'string.min': 'Invalid password',
     'string.max': 'Invalid password',
     'string.empty': 'Password is a required field'
-  }),
-  browserName: Joi.string().optional(),
-  deviceType: Joi.string().optional()
+  })
 });
 
 export { loginSchema };

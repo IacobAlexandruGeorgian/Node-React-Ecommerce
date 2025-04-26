@@ -20,7 +20,7 @@
   "license": "ISC",
   "type": "commonjs",
   "dependencies": {
-    "@elastic/elasticsearch": "^9.0.0",
+    "@elastic/elasticsearch": "^8.18.2",
     "@faker-js/faker": "^9.7.0",
     "@iacobalexandrugeorgian/shared": "npm:@iacobalexandrugeorgian/shared@^0.0.3",
     "amqplib": "^0.10.7",
