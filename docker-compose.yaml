@@ -172,6 +172,33 @@ services:
     depends_on:
       - elasticsearch
       - mysql
+  users:
+    container_name: users_container
+    build:
+      context: ../server/4-users-service
+      dockerfile: Dockerfile.dev
+    restart: always
+    ports:
+      - 4003:4003
+    env_file: ../server/4-users-service/.env
+    environment:
+      - ENABLE_APM=1
+      - DATABASE_URL=mongodb://mongodb_container:27017/jobber-users
+      - GATEWAY_JWT_TOKEN=b6kdhjdev1
+      - JWT_TOKEN=0ty2wsczkd
+      - NODE_ENV=development
+      - AP_GATEWAY_URL=http://gateway_container:4000
+      - RABBITMQ_ENDPOINT=amqp://guest:guest@rabbitmq_container:5672
+      - CLOUD_NAME=
+      - CLOUD_API_KEY=e0c4d307-7f3c-4f26-8817-e0aa4b7a8e8e
+      - CLOUD_API_SECRET=-
+      - REDIS_HOST=redis://redis_container:6379
+      - ELASTIC_SEARCH_URL=http://elastic:admin1234@elasticsearch_container:9200
+      - ELASTIC_APM_SERVER_URL=http://apm_server_container:8200
+      - ELASTIC_APM_SECRET_TOKEN=
+    depends_on:
+      - elasticsearch
+      - mongodb
 
 
 networks:
