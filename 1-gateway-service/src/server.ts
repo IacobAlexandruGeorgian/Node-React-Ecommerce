@@ -1,26 +1,37 @@
-import { CustomError, IErrorResponse, winstonLogger } from "@iacobalexandrugeorgian/shared";
-import { Application, json, NextFunction, Request, Response, urlencoded } from "express";
-import { Logger } from "winston";
-import cookieSession from "cookie-session";
-import helmet from "helmet";
-import cors from "cors";
-import hpp from "hpp";
-import compression from "compression";
-import { StatusCodes } from "http-status-codes";
-import http from "http";
-import { config } from "@gateway/config";
-import { elasticSearch } from "@gateway/elasticsearch";
-import { appRoutes } from "@gateway/routes";
-import { axiosAuthInstance } from "./services/api/auth.service";
-import { axiosBuyerInstance } from "./services/api/buyer.service";
+import http from 'http';
 
-const SERVER_PORT = 4001;
+import 'express-async-errors';
+import { CustomError, IErrorResponse, winstonLogger } from '@iacobalexandrugeorgian/shared';
+import { Application, Request, Response, json, urlencoded, NextFunction } from 'express';
+import { Logger } from 'winston';
+import cookieSession from 'cookie-session';
+import cors from 'cors';
+import hpp from 'hpp';
+import helmet from 'helmet';
+import compression from 'compression';
+import { StatusCodes } from 'http-status-codes';
+import { config } from '@gateway/config';
+import { elasticSearch } from '@gateway/elasticsearch';
+import { appRoutes } from '@gateway/routes';
+import { axiosAuthInstance } from '@gateway/services/api/auth.service';
+import { axiosBuyerInstance } from '@gateway/services/api/buyer.service';
+import { axiosSellerInstance } from '@gateway/services/api/seller.service';
+import { axiosGigInstance } from '@gateway/services/api/gig.service';
+import { Server } from 'socket.io';
+import { createClient } from 'redis';
+import { createAdapter } from '@socket.io/redis-adapter';
+import { SocketIOAppHandler } from '@gateway/sockets/socket';
+import { isAxiosError } from 'axios';
+
+const SERVER_PORT = 4000;
+const DEFAULT_ERROR_CODE = 500;
 const log: Logger = winstonLogger(`${config.ELASTIC_SEARCH_URL}`, 'apiGatewayServer', 'debug');
+export let socketIO: Server;
 
 export class GatewayServer {
   private app: Application;
 
-  constructor (app: Application) {
+  constructor(app: Application) {
     this.app = app;
   }
 
@@ -40,8 +51,10 @@ export class GatewayServer {
         name: 'session',
         keys: [`${config.SECRET_KEY_ONE}`, `${config.SECRET_KEY_TWO}`],
         maxAge: 24 * 7 * 3600000,
-        secure: config.NODE_ENV ! == 'developmemt' // update with value from config
-        // sameSite: none
+        secure: config.NODE_ENV !== 'development',
+        ...(config.NODE_ENV !== 'development' && {
+          sameSite: 'none'
+        })
       })
     );
     app.use(hpp());
@@ -56,6 +69,8 @@ export class GatewayServer {
       if (req.session?.jwt) {
         axiosAuthInstance.defaults.headers['Authorization'] = `Bearer ${req.session?.jwt}`;
         axiosBuyerInstance.defaults.headers['Authorization'] = `Bearer ${req.session?.jwt}`;
+        axiosSellerInstance.defaults.headers['Authorization'] = `Bearer ${req.session?.jwt}`;
+        axiosGigInstance.defaults.headers['Authorization'] = `Bearer ${req.session?.jwt}`;
       }
       next();
     });
@@ -72,7 +87,7 @@ export class GatewayServer {
   }
 
   private startElasticSearch(): void {
-    elasticSearch.checkConnection()
+    elasticSearch.checkConnection();
   }
 
   private errorHandler(app: Application): void {
@@ -87,19 +102,41 @@ export class GatewayServer {
       if (error instanceof CustomError) {
         log.log('error', `GatewayService ${error.comingFrom}:`, error);
         res.status(error.statusCode).json(error.serializeErrors());
-        next();
       }
 
+      if (isAxiosError(error)) {
+        log.log('error', `GatewayService Axios Error - ${error?.response?.data?.comingFrom}:`, error);
+        res.status(error?.response?.data?.statusCode ?? DEFAULT_ERROR_CODE).json({ message: error?.response?.data?.message ?? 'Error occurred.' });
+      }
+
+      next();
     });
   }
 
   private async startServer(app: Application): Promise<void> {
     try {
       const httpServer: http.Server = new http.Server(app);
+      const socketIO: Server = await this.createSocketIO(httpServer);
       this.startHttpServer(httpServer);
+      this.socketIOConnections(socketIO);
     } catch (error) {
       log.log('error', 'GatewayService startServer() error method:', error);
     }
+  }
+
+  private async createSocketIO(httpServer: http.Server): Promise<Server> {
+    const io: Server = new Server(httpServer, {
+      cors: {
+        origin: `${config.CLIENT_URL}`,
+        methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS']
+      }
+    });
+    const pubClient = createClient({ url: config.REDIS_HOST });
+    const subClient = pubClient.duplicate();
+    await Promise.all([pubClient.connect(), subClient.connect()]);
+    io.adapter(createAdapter(pubClient, subClient));
+    socketIO = io;
+    return io;
   }
 
   private async startHttpServer(httpServer: http.Server): Promise<void> {
@@ -111,5 +148,10 @@ export class GatewayServer {
     } catch (error) {
       log.log('error', 'GatewayService startServer() error method:', error);
     }
+  }
+
+  private socketIOConnections(io: Server): void {
+    const socketIoApp = new SocketIOAppHandler(io);
+    socketIoApp.listen();
   }
 }
