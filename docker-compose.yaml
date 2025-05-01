@@ -127,12 +127,12 @@ services:
   notifications:
     container_name: notification_container
     build:
-      context: 2-notification-service
+      context: /2-notification-service
       dockerfile: Dockerfile.dev
     restart: always
     ports: 
     - 5001:4001
-    env_file: 2-notification-service/.env
+    env_file: /2-notification-service/.env
     environment:
       - ENABLE_APM=0
       - NODE_ENV=development
@@ -148,12 +148,12 @@ services:
   auth:
     container_name: auth_container
     build:
-      context: ../server/3-auth-service
+      context: /3-auth-service
       dockerfile: Dockerfile.dev
     restart: always
     ports:
       - 4002:4002
-    env_file: ../server/3-auth-service/.env
+    env_file: /3-auth-service/.env
     environment:
       - ENABLE_APM=1
       - GATEWAY_JWT_TOKEN=b6kdhjdev1
@@ -175,12 +175,12 @@ services:
   users:
     container_name: users_container
     build:
-      context: ../server/4-users-service
+      context: /4-users-service
       dockerfile: Dockerfile.dev
     restart: always
     ports:
       - 4003:4003
-    env_file: ../server/4-users-service/.env
+    env_file: /4-users-service/.env
     environment:
       - ENABLE_APM=1
       - DATABASE_URL=mongodb://mongodb_container:27017/jobber-users
@@ -202,12 +202,12 @@ services:
   gig:
     container_name: gig_container
     build:
-      context: ../server/5-gig-service
+      context: /5-gig-service
       dockerfile: Dockerfile.dev
     restart: always
     ports:
       - 4004:4004
-    env_file: ../server/5-gig-service/.env
+    env_file: /5-gig-service/.env
     environment:
       - ENABLE_APM=1
       - DATABASE_URL=mongodb://mongodb_container:27017/jobber-gig
@@ -229,12 +229,12 @@ services:
   chat:
     container_name: chat_container
     build:
-      context: ../server/6-chat-service
+      context: /6-chat-service
       dockerfile: Dockerfile.dev
     restart: always
     ports:
       - 4005:4005
-    env_file: ../server/6-chat-service/.env
+    env_file: /6-chat-service/.env
     environment:
       - ENABLE_APM=1
       - DATABASE_URL=mongodb://mongodb_container:27017/jobber-chat
@@ -242,6 +242,33 @@ services:
       - JWT_TOKEN=0ty2wsczkd
       - NODE_ENV=development
       - AP_GATEWAY_URL=http://gateway_container:4000
+      - RABBITMQ_ENDPOINT=amqp://guest:guest@rabbitmq_container:5672
+      - CLOUD_NAME=
+      - CLOUD_API_KEY=e0c4d307-7f3c-4f26-8817-e0aa4b7a8e8e
+      - CLOUD_API_SECRET=
+      - ELASTIC_SEARCH_URL=http://elastic:admin1234@elasticsearch_container:9200
+      - ELASTIC_APM_SERVER_URL=http://apm_server_container:8200
+      - ELASTIC_APM_SECRET_TOKEN=
+    depends_on:
+      - elasticsearch
+      - mongodb
+  order:
+    container_name: order_container
+    build:
+      context: /7-order-service
+      dockerfile: Dockerfile.dev
+    restart: always
+    ports:
+      - 4006:4006
+    env_file: /7-order-service/.env
+    environment:
+      - ENABLE_APM=1
+      - DATABASE_URL=mongodb://mongodb_container:27017/jobber-order
+      - GATEWAY_JWT_TOKEN=b6kdhjdev1
+      - JWT_TOKEN=0ty2wsczkd
+      - NODE_ENV=development
+      - AP_GATEWAY_URL=http://gateway_container:4000
+      - CLIENT_URL=http://localhost:3000
       - RABBITMQ_ENDPOINT=amqp://guest:guest@rabbitmq_container:5672
       - CLOUD_NAME=
       - CLOUD_API_KEY=e0c4d307-7f3c-4f26-8817-e0aa4b7a8e8e
