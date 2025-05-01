@@ -13,6 +13,16 @@
             "database": "jobber_auth",
             "username": "jobber",
             "password": "jobber"
+        },
+        {
+            "previewLimit": 50,
+            "server": "193.186.4.7",
+            "port": 5432,
+            "driver": "PostgreSQL",
+            "name": "jobber_review",
+            "database": "jobber_review",
+            "username": "jobber",
+            "password": "jobber"
         }
     ]
 }
