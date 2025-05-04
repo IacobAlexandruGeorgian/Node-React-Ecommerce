@@ -95,6 +95,59 @@ services:
       - ./kibana.yml/:/usr/share/kibana/config/kibana.yml:ro
     depends_on:
       - elasticsearch
+  apmServer:
+    image: docker.elastic.co/apm/apm-server:8.12.2
+    container_name: apm_server_container
+    ports:
+      - 8200:8200
+    volumes:
+      - ./apm-server.yml:/usr/share/apm-server/apm-server.yml:ro
+    networks:
+      - elastic
+    command: >
+      apm-server -e
+        -E apm-server.rum.enabled=true
+        -E setup.kibana.host=kibana_container:5601
+        -E setup.template.settings.index.number_of_replicas=0
+        -E apm-server.kibana.enabled=true
+        -E apm-server.kibana.host=kibana_container:5601
+        -E apm-server.kibana.protocol=http
+        -E strict.perms=false
+        -E apm-server.auth.anonymous.enabled=true
+  metricbeat:
+    container_name: metricbeat_container
+    image: docker.elastic.co/beats/metricbeat:8.12.2
+    user: root
+    ports:
+      - 5066:5066
+    networks:
+      - elastic
+    volumes:
+      - ./metricbeat.yml/:/usr/share/metricbeat/metricbeat.yml:ro
+      # docker module
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      # system module
+      - /sys/fs/cgroup:/hostfs/sys/fs/cgroup:ro
+      - /proc:/hostfs/proc:ro
+      - /:/hostfs:ro
+    command: ["--strict.perms=false", "-system.hostfs=/hostfs"]
+    depends_on: 
+      - elasticsearch
+  heartbeat:
+    container_name: heartbeat_container
+    image: docker.elastic.co/beats/heartbeat:8.12.2
+    user: root
+    hostname: heartbeat
+    cap_add:
+      - NET_RAW
+    networks:
+      - elastic
+    command: ["--strict.perms=false"]
+    volumes:
+      - ./heartbeat.yml:/usr/share/heartbeat/heartbeat.yml:ro
+    depends_on: 
+      - elasticsearch
+
   gateway:
     container_name: gateway_container
     build:
@@ -279,6 +332,35 @@ services:
     depends_on:
       - elasticsearch
       - mongodb
+  review:
+    container_name: order_container
+    build:
+      context: /8-review-service
+      dockerfile: Dockerfile.dev
+    restart: always
+    ports:
+      - 4007:4007
+    env_file: /8-review-service/.env
+    environment:
+      - ENABLE_APM=1
+      - DATABASE_HOST=localhost
+      - DATABASE_USER=jobber
+      - DATABASE_PASSWORD=api
+      - DATABASE_NAME=jobber_reviews
+      - GATEWAY_JWT_TOKEN=b6kdhjdev1
+      - JWT_TOKEN=0ty2wsczkd
+      - NODE_ENV=development
+      - AP_GATEWAY_URL=http://gateway_container:4000
+      - RABBITMQ_ENDPOINT=amqp://guest:guest@rabbitmq_container:5672
+      - CLOUD_NAME=
+      - CLOUD_API_KEY=e0c4d307-7f3c-4f26-8817-e0aa4b7a8e8e
+      - CLOUD_API_SECRET=
+      - ELASTIC_SEARCH_URL=http://elastic:admin1234@elasticsearch_container:9200
+      - ELASTIC_APM_SERVER_URL=http://apm_server_container:8200
+      - ELASTIC_APM_SECRET_TOKEN=
+    depends_on:
+      - elasticsearch
+      - postgres
 
 
 networks:

@@ -1,6 +1,6 @@
 import http from 'http';
 
-import 'express-async-errors';
+// import 'express-async-errors';
 import { CustomError, IErrorResponse, winstonLogger } from '@iacobalexandrugeorgian/shared';
 import { Application, Request, Response, json, urlencoded, NextFunction } from 'express';
 import { Logger } from 'winston';
