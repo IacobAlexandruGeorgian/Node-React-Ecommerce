@@ -1,7 +1,6 @@
 # docker compose up -d redis mongodb postgres rabbitmq elasticsearch kibana
 # curl -s -X POST -u elastics:admin1234 -H "Content-Type: application/json" http://localhost:9200/_security/user/kibana_system/_password -d "{\"password\": \"\kibana\"}"
-# bin/elasticsearch-service-tokens create elastic/kibana jobber-kibana - AAEAAWVsYXN0aWMva2liYW5hL2pvYmJlci1raWJhbmE6eTJfaWw5bmhURkc2QTdDUy1ncVFBZw
-version: '3.9'
+# bin/elasticsearch-service-tokens create elastic/kibana jobber-kibana - AAEAAWVsYXN0aWMva2liYW5hL2pvYmJlci1raWJhbmE6YV9PT3I5bUFTLW0wTzBjOXZpS1ptZw
 services:
   redis:
     container_name: redis_container
@@ -85,7 +84,7 @@ services:
       - ELASTICSEARCH_HOSTS=["http://elasticsearch_container:9200"]
       - ELASTICSEARCH_USERNAME=kibana_system
       - ELASTICSEARCH_PASSWORD=kibana
-      - ELASTICSEARCH_SERVICEACCOUNT_TOKEN=AAEAAWVsYXN0aWMva2liYW5hL2pvYmJlci1raWJhbmE6aGpmUFdpeEhRRHVCcENTSnd1WFNDQQ
+      - ELASTICSEARCH_SERVICEACCOUNT_TOKEN=AAEAAWVsYXN0aWMva2liYW5hL2pvYmJlci1raWJhbmE6YV9PT3I5bUFTLW0wTzBjOXZpS1ptZw
       - XPACK_FLEET_AGENTS_ELASTICSEARCH_HOSTS=["http://elasticsearch_container:9200"]
     ports:
       - 5601:5601
