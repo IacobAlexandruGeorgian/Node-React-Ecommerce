@@ -3,3 +3,4 @@
 **/.env
 /docker-volumes
 secrets.md
+/jobber-k8s/minikube/jobber-secrets/backend-secrets.yaml
