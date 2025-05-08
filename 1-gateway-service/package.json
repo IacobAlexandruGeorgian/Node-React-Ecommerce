@@ -20,7 +20,7 @@
   "license": "ISC",
   "type": "commonjs",
   "dependencies": {
-    "@elastic/elasticsearch": "^9.0.0",
+    "@elastic/elasticsearch": "^8.18.2",
     "@iacobalexandrugeorgian/shared": "npm:@iacobalexandrugeorgian/shared@^0.0.3",
     "@socket.io/redis-adapter": "^8.3.0",
     "axios": "^1.8.4",
