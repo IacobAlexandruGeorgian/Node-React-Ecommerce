@@ -24,5 +24,20 @@
             "username": "jobber",
             "password": "jobber"
         }
-    ]
+    ],
+    "jenkins-runner.jobs": {
+        "jobber-reviews": {
+            "isDefault": true,
+            "runWith": "jenkins-master",
+            "name": "jobber-reviews"
+        }
+    },
+    "jenkins-runner.hostConfigs": {
+        "jenkins-master": {
+            "url": "http://localhost:8080",
+            "user": "jobber",
+            "password": "jobber",
+            "useCrumbIssuer": true
+        }
+    }
 }

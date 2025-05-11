@@ -34,6 +34,8 @@ spec:
               value: kibana_system
             - name: ELASTICSEARCH_PASSWORD
               value: kibana
+            - name: ELASTICSEARCH_SERVICEACCOUNT_TOKEN
+              value: AAEAAWVsYXN0aWMva2liYW5hL2pvYmJlci1raWJhbmE6Q1RYSnV0R1dTOTZGbmtkZ3p1Q2stUQ
       volumes:
       - name: kibana-config
         configMap:

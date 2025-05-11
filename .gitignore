@@ -4,3 +4,5 @@
 /docker-volumes
 secrets.md
 /jobber-k8s/minikube/jobber-secrets/backend-secrets.yaml
+/jobber-k8s/minikube/jobber-secrets/default-secret-token.yaml
+/jobber-k8s/minikube/1-gateway/certs
