@@ -56,7 +56,7 @@ export class GatewayServer {
         maxAge: 24 * 7 * 3600000,
         secure: config.NODE_ENV !== 'development',
         ...(config.NODE_ENV !== 'development' && {
-          sameSite: 'none'
+          // sameSite: 'none'
         })
       })
     );
