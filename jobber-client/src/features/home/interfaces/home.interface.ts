@@ -1,8 +1,8 @@
-// import { ISellerGig } from 'src/features/gigs/interfaces/gig.interface';
-// import { ISellerDocument } from 'src/features/sellers/interfaces/seller.interface';
+import { ISellerGig } from 'src/features/gigs/interfaces/gig.interface';
+import { ISellerDocument } from 'src/features/sellers/interfaces/seller.interface';
 
 export interface IHomeProps {
-  gigs: [];
+  gigs: ISellerGig[];
   title: string;
   subTitle?: string;
   category?: string;
@@ -14,7 +14,7 @@ export interface ISliderState {
 }
 
 export interface IFeaturedExpertProps {
-  sellers: [];
+  sellers: ISellerDocument[];
 }
 
 export interface ICategory {

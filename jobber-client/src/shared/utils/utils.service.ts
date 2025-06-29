@@ -7,13 +7,9 @@ import { logout } from 'src/features/auth/reducers/logout.reducer';
 import { authApi } from 'src/features/auth/services/auth.service';
 import { api } from 'src/store/api';
 import { filter } from 'lodash';
-// import millify from 'millify';
-// import { NavigateFunction } from 'react-router-dom';
-// import { toast } from 'react-toastify';
-// import { logout } from 'src/features/auth/reducers/logout.reducer';
-// import { authApi } from 'src/features/auth/services/auth.service';
+import millify from 'millify';
+import { toast } from 'react-toastify';
 import { IOrderDocument } from 'src/features/order/interfaces/order.interface';
-// import { api } from 'src/store/api';
 
 countries.registerLocale(enLocale);
 
@@ -129,10 +125,10 @@ export const orderTypes = (status: string, orders: IOrderDocument[]): number => 
   return orderList.length;
 };
 
-// export const sellerOrderList = (status: string, orders: IOrderDocument[]): IOrderDocument[] => {
-//   const orderList: IOrderDocument[] = filter(orders, (order: IOrderDocument) => lowerCase(order.status) === lowerCase(status));
-//   return orderList;
-// };
+export const sellerOrderList = (status: string, orders: IOrderDocument[]): IOrderDocument[] => {
+  const orderList: IOrderDocument[] = filter(orders, (order: IOrderDocument) => lowerCase(order.status) === lowerCase(status));
+  return orderList;
+};
 
 export const degreeList = (): string[] => {
   return ['Associate', 'B.A.', 'B.Sc.', 'M.A.', 'M.B.A.', 'M.Sc.', 'J.D.', 'M.D.', 'Ph.D.', 'LLB', 'Certificate', 'Other'];
@@ -152,12 +148,12 @@ export const yearsList = (maxOffset: number): string[] => {
   return years;
 };
 
-// export const shortenLargeNumbers = (data: number | undefined): string => {
-//   if (data === undefined) {
-//     return '0';
-//   }
-//   return millify(data, { precision: 0 });
-// };
+export const shortenLargeNumbers = (data: number | undefined): string => {
+  if (data === undefined) {
+    return '0';
+  }
+  return millify(data, { precision: 0 });
+};
 
 export const rating = (num: number): number => {
   if (num) {
@@ -166,31 +162,31 @@ export const rating = (num: number): number => {
   return 0.0;
 };
 
-// export const showSuccessToast = (message: string): void => {
-//   toast.success(message, {
-//     position: 'bottom-right',
-//     autoClose: 3000,
-//     hideProgressBar: false,
-//     closeOnClick: true,
-//     pauseOnHover: false,
-//     draggable: false,
-//     progress: undefined,
-//     theme: 'colored'
-//   });
-// };
+export const showSuccessToast = (message: string): void => {
+  toast.success(message, {
+    position: 'bottom-right',
+    autoClose: 3000,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: false,
+    draggable: false,
+    progress: undefined,
+    theme: 'colored'
+  });
+};
 
-// export const showErrorToast = (message: string): void => {
-//   toast.error(message, {
-//     position: 'bottom-right',
-//     autoClose: 3000,
-//     hideProgressBar: false,
-//     closeOnClick: true,
-//     pauseOnHover: false,
-//     draggable: false,
-//     progress: undefined,
-//     theme: 'colored'
-//   });
-// };
+export const showErrorToast = (message: string): void => {
+  toast.error(message, {
+    position: 'bottom-right',
+    autoClose: 3000,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: false,
+    draggable: false,
+    progress: undefined,
+    theme: 'colored'
+  });
+};
 
 export const reactQuillUtils = () => {
   const modules = {

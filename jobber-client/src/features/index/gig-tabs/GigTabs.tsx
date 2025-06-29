@@ -1,23 +1,23 @@
 import { FC, ReactElement, useState } from 'react';
-// import { useGetAuthGigsByCategoryQuery } from 'src/features/auth/services/auth.service';
-// import { ISellerGig } from 'src/features/gigs/interfaces/gig.interface';
-// import TopGigsView from 'src/shared/gigs/TopGigsView';
+import { useGetAuthGigsByCategoryQuery } from 'src/features/auth/services/auth.service';
+import { ISellerGig } from 'src/features/gigs/interfaces/gig.interface';
+import TopGigsView from 'src/shared/gigs/TopGigsView';
 import { categories, lowerCase, replaceAmpersandAndDashWithSpace, replaceSpacesWithDash } from 'src/shared/utils/utils.service';
 import { v4 as uuidv4 } from 'uuid';
 
 const GigTabs: FC = (): ReactElement => {
   const [activeTab, setActiveTab] = useState<string>('Graphics & Design');
-  // const queryType = `query=${replaceAmpersandAndDashWithSpace(`${lowerCase(activeTab)}`)}`;
-  // const { data, isSuccess } = useGetAuthGigsByCategoryQuery({
-  //   query: `${queryType}`,
-  //   from: '0',
-  //   size: '10',
-  //   type: 'forward'
-  // });
-  // let categoryGigs: ISellerGig[] = [];
-  // if (isSuccess) {
-  //   categoryGigs = data.gigs as ISellerGig[];
-  // }
+  const queryType = `query=${replaceAmpersandAndDashWithSpace(`${lowerCase(activeTab)}`)}`;
+  const { data, isSuccess } = useGetAuthGigsByCategoryQuery({
+    query: `${queryType}`,
+    from: '0',
+    size: '10',
+    type: 'forward'
+  });
+  let categoryGigs: ISellerGig[] = [];
+  if (isSuccess) {
+    categoryGigs = data.gigs as ISellerGig[];
+  }
 
   return (
     <div className="relative m-auto mt-8 w-screen px-6 xl:container md:px-12 lg:px-6">
@@ -39,7 +39,7 @@ const GigTabs: FC = (): ReactElement => {
             ))}
           </ul>
         </div>
-        {/* <div className="mt-4 h-full overflow-hidden border px-6 py-6">
+        <div className="mt-4 h-full overflow-hidden border px-6 py-6">
           {categoryGigs.length > 0 ? (
             <>
               <a
@@ -53,7 +53,7 @@ const GigTabs: FC = (): ReactElement => {
           ) : (
             <div className="flex h-96 items-center justify-center text-lg">Information not available at the moment.</div>
           )}
-        </div> */}
+        </div>
       </div>
     </div>
   );

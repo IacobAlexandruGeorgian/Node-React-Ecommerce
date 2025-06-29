@@ -8,6 +8,15 @@ import ProtectedRoute from "./features/ProtectedRoute";
 import Error from "./features/error/Error";
 import BuyerDasboard from "./features/buyer/components/Dashboard";
 import AddSeller from "./features/sellers/components/add/AddSeller";
+import CurrentSellerProfile from "./features/sellers/components/profile/CurrentSellerProfile";
+import Seller from "./features/sellers/components/dashboard/Seller";
+import SellerDashboard from "./features/sellers/components/dashboard/SellerDashboard";
+import ManageOrders from "./features/sellers/components/dashboard/ManageOrders";
+import ManageEarnings from "./features/sellers/components/dashboard/ManageEarnings";
+import AddGig from "./features/gigs/components/gig/AddGig";
+import GigView from "./features/gigs/components/view/GigView";
+import Gigs from "./features/gigs/components/gigs/Gigs";
+import EditGig from "./features/gigs/components/gig/EditGig";
 
 const Layout = ({backgroundColor = '#ffffff', children}: {backgroundColor: string, children: ReactNode}): JSX.Element => (
   <div style={{backgroundColor}} className="flex flex-grow">
@@ -68,6 +77,104 @@ const AppRouter: FC = () => {
           <ProtectedRoute>
             <Layout backgroundColor="#ffffff">
               <AddSeller/>
+            </Layout>
+          </ProtectedRoute>
+        </Suspense>
+      )
+    },
+    {
+      path: '/seller_profile/:username/:sellerId/edit',
+      element: (
+        <Suspense>
+          <ProtectedRoute>
+            <Layout backgroundColor="#ffffff">
+              <CurrentSellerProfile/>
+            </Layout>
+          </ProtectedRoute>
+        </Suspense>
+      )
+    },
+    {
+      path: '/:username/:sellerId',
+      element: (
+        <Suspense>
+          <ProtectedRoute>
+            <Layout backgroundColor="#ffffff">
+              <Seller/>
+            </Layout>
+          </ProtectedRoute>
+        </Suspense>
+      ),
+      children: [
+        {
+          path: 'seller_dashboard',
+          element: <SellerDashboard/>
+        },
+        {
+          path: 'manage_orders',
+          element: <ManageOrders/>
+        },
+        {
+          path: 'manage_earnings',
+          element: <ManageEarnings/>
+        },
+      ]
+    },
+    {
+      path: '/manage_gigs/new/:sellerId',
+      element: (
+        <Suspense>
+          <ProtectedRoute>
+            <Layout backgroundColor="#ffffff">
+              <AddGig/>
+            </Layout>
+          </ProtectedRoute>
+        </Suspense>
+      )
+    },
+    {
+      path: '/manage_gigs/edit/:gigId',
+      element: (
+        <Suspense>
+          <ProtectedRoute>
+            <Layout backgroundColor="#ffffff">
+              <EditGig/>
+            </Layout>
+          </ProtectedRoute>
+        </Suspense>
+      )
+    },
+    {
+      path: '/gig/:username/:title/:sellerId/:gigId/view',
+      element: (
+        <Suspense>
+          <ProtectedRoute>
+            <Layout backgroundColor="#ffffff">
+              <GigView/>
+            </Layout>
+          </ProtectedRoute>
+        </Suspense>
+      )
+    },
+    {
+      path: '/categories/:category',
+      element: (
+        <Suspense>
+          <ProtectedRoute>
+            <Layout backgroundColor="#ffffff">
+              <Gigs type="categories"/>
+            </Layout>
+          </ProtectedRoute>
+        </Suspense>
+      )
+    },
+    {
+      path: '/search/gigs',
+      element: (
+        <Suspense>
+          <ProtectedRoute>
+            <Layout backgroundColor="#ffffff">
+              <Gigs type="search"/>
             </Layout>
           </ProtectedRoute>
         </Suspense>

@@ -1,7 +1,7 @@
 import { FC, ReactElement } from 'react'
 import HomeSlider from './components/HomeSlider'
 import HomeGigsView from './components/HomeGigsView'
-import FeaturedExperts from './components/FeautedExperts'
+import FeaturedExperts from './components/FeaturedExperts'
 
 export const Home: FC = (): ReactElement => {
   return (

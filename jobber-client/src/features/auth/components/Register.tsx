@@ -9,7 +9,7 @@ import TextInput from 'src/shared/inputs/TextInput';
 import { IModalBgProps } from 'src/shared/modals/interfaces/modal.interface';
 import ModalBg from 'src/shared/modals/ModalBg';
 import { IResponse } from 'src/shared/shared.interface';
-import { checkImage, readAsBase64 } from 'src/shared/utils/image-utils';
+import { checkImage, readAsBase64 } from 'src/shared/utils/image-utils.service';
 import { countriesList, saveToSessionStorage } from 'src/shared/utils/utils.service';
 import { useAppDispatch } from 'src/store/store';
 

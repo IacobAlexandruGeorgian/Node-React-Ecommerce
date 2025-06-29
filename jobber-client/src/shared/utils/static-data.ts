@@ -4,10 +4,9 @@ import contact from 'src/assets/contact.png';
 import create from 'src/assets/create.png';
 import { IAuthUser } from 'src/features/auth/interfaces/auth.interface';
 import { IBuyerDocument } from 'src/features/buyer/interfaces/buyer.interface';
-// import { ISellerGig } from 'src/features/gigs/interfaces/gig.interface';
-// import { ICategory } from 'src/features/home/interfaces/home.interface';
-// import { IRatingTypes } from 'src/features/order/interfaces/review.interface';
-// import { ISellerDocument } from 'src/features/sellers/interfaces/seller.interface';
+import { ISellerGig } from 'src/features/gigs/interfaces/gig.interface';
+import { IRatingTypes } from 'src/features/order/interfaces/review.interface';
+import { ISellerDocument } from 'src/features/sellers/interfaces/seller.interface';
 
 import { ISliderImagesText } from '../shared.interface';
 
@@ -37,79 +36,79 @@ export const emptyBuyerData: IBuyerDocument = {
   createdAt: ''
 };
 
-// export const emptySellerData: ISellerDocument = {
-//   _id: '',
-//   profilePublicId: '',
-//   fullName: '',
-//   profilePicture: '',
-//   username: '',
-//   email: '',
-//   description: '',
-//   country: '',
-//   oneliner: '',
-//   skills: [],
-//   ratingsCount: 0,
-//   ratingSum: 0,
-//   ratingCategories: {
-//     five: { value: 0, count: 0 },
-//     four: { value: 0, count: 0 },
-//     three: { value: 0, count: 0 },
-//     two: { value: 0, count: 0 },
-//     one: { value: 0, count: 0 }
-//   },
-//   recentDelivery: '',
-//   languages: [],
-//   responseTime: 0,
-//   experience: [],
-//   education: [],
-//   socialLinks: [],
-//   certificates: [],
-//   ongoingJobs: 0,
-//   completedJobs: 0,
-//   cancelledJobs: 0,
-//   totalEarnings: 0,
-//   totalGigs: 0,
-//   paypal: '',
-//   createdAt: ''
-// };
+export const emptySellerData: ISellerDocument = {
+  _id: '',
+  profilePublicId: '',
+  fullName: '',
+  profilePicture: '',
+  username: '',
+  email: '',
+  description: '',
+  country: '',
+  oneliner: '',
+  skills: [],
+  ratingsCount: 0,
+  ratingSum: 0,
+  ratingCategories: {
+    five: { value: 0, count: 0 },
+    four: { value: 0, count: 0 },
+    three: { value: 0, count: 0 },
+    two: { value: 0, count: 0 },
+    one: { value: 0, count: 0 }
+  },
+  recentDelivery: '',
+  languages: [],
+  responseTime: 0,
+  experience: [],
+  education: [],
+  socialLinks: [],
+  certificates: [],
+  ongoingJobs: 0,
+  completedJobs: 0,
+  cancelledJobs: 0,
+  totalEarnings: 0,
+  totalGigs: 0,
+  paypal: '',
+  createdAt: ''
+};
 
-// export const emptyGigData: ISellerGig = {
-//   _id: '',
-//   id: '',
-//   sellerId: '',
-//   title: '',
-//   username: '',
-//   profilePicture: '',
-//   email: '',
-//   description: '',
-//   basicDescription: '',
-//   basicTitle: '',
-//   expectedDelivery: '',
-//   active: true,
-//   categories: '',
-//   subCategories: [],
-//   tags: [],
-//   ratingsCount: 0,
-//   ratingSum: 0,
-//   ratingCategories: {
-//     five: { value: 0, count: 0 },
-//     four: { value: 0, count: 0 },
-//     three: { value: 0, count: 0 },
-//     two: { value: 0, count: 0 },
-//     one: { value: 0, count: 0 }
-//   },
-//   price: 0,
-//   coverImage: '',
-//   createdAt: ''
-// };
+export const emptyGigData: ISellerGig = {
+  _id: '',
+  id: '',
+  sellerId: '',
+  title: '',
+  username: '',
+  profilePicture: '',
+  email: '',
+  description: '',
+  basicDescription: '',
+  basicTitle: '',
+  expectedDelivery: '',
+  active: true,
+  categories: '',
+  subCategories: [],
+  tags: [],
+  ratingsCount: 0,
+  ratingSum: 0,
+  ratingCategories: {
+    five: { value: 0, count: 0 },
+    four: { value: 0, count: 0 },
+    three: { value: 0, count: 0 },
+    two: { value: 0, count: 0 },
+    one: { value: 0, count: 0 }
+  },
+  price: 0,
+  coverImage: '',
+  createdAt: ''
+};
 
-// export const ratingTypes: IRatingTypes = {
-//   one: '1',
-//   two: '2',
-//   three: '3',
-//   four: '4',
-//   five: '5'
-// };
+export const ratingTypes: IRatingTypes = {
+  one: '1',
+  two: '2',
+  three: '3',
+  four: '4',
+  five: '5'
+};
 
 export const sliderImages: string[] = [
   'https://fiverr-res.cloudinary.com/q_auto,f_auto,w_1400,dpr_1.0/v1/attachments/generic_asset/asset/50218c41d277f7d85feeaf3efb4549bd-1599072608122/bg-signup-1400-x1.png',
