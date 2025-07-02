@@ -3,7 +3,7 @@ import { NavigateFunction, useNavigate } from 'react-router-dom';
 import HomeHeader from 'src/shared/header/components/HomeHeader';
 import CircularPageLoader from 'src/shared/page-loader/CircularPageLoader';
 import { applicationLogout, getDataFromLocalStorage, saveToSessionStorage } from 'src/shared/utils/utils.service';
-// import { socket } from 'src/sockets/socket.service';
+import { socket } from 'src/sockets/socket.service';
 import { useAppDispatch, useAppSelector } from 'src/store/store';
 import { IReduxState } from 'src/store/store.interface';
 
@@ -42,7 +42,7 @@ const AppPage: FC = (): ReactElement => {
           navigate('/seller_onboarding');
         }
         if (authUser.username !== null) {
-          // socket.emit('loggedInUsers', authUser.username);
+          socket.emit('loggedInUsers', authUser.username);
         }
       }
     } catch (error) {

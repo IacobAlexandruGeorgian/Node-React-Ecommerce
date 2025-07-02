@@ -1,5 +1,5 @@
 import { Dispatch } from '@reduxjs/toolkit';
-// import axios, { AxiosResponse } from 'axios';
+import axios, { AxiosResponse } from 'axios';
 import countries, { LocalizedCountryNames } from 'i18n-iso-countries';
 import enLocale from 'i18n-iso-countries/langs/en.json';
 import { NavigateFunction } from 'react-router-dom';
@@ -215,10 +215,10 @@ export const bytesToSize = (bytes: number): string => {
   return `${(bytes / 1024 ** i).toFixed(1)} ${sizes[i]}`;
 };
 
-// export const getFileBlob = async (url: string): Promise<AxiosResponse> => {
-//   const response: AxiosResponse = await axios.get(url, { responseType: 'blob' });
-//   return response;
-// };
+export const getFileBlob = async (url: string): Promise<AxiosResponse> => {
+  const response: AxiosResponse = await axios.get(url, { responseType: 'blob' });
+  return response;
+};
 
 export const downloadFile = (blobUrl: string, fileName: string): void => {
   const link: HTMLAnchorElement = document.createElement('a');

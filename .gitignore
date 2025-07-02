@@ -1,6 +1,7 @@
 **/node_modules
 **/.npmrc
 **/.env
+**/.env.production
 /docker-volumes
 secrets.md
 /jobber-k8s/minikube/jobber-secrets/backend-secrets.yaml

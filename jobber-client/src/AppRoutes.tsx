@@ -17,6 +17,11 @@ import AddGig from "./features/gigs/components/gig/AddGig";
 import GigView from "./features/gigs/components/view/GigView";
 import Gigs from "./features/gigs/components/gigs/Gigs";
 import EditGig from "./features/gigs/components/gig/EditGig";
+import Chat from "./features/chat/components/Chat";
+import Checkout from "./features/order/components/Checkout";
+import Requirement from "./features/order/components/Requirement";
+import Order from "./features/order/components/Order";
+import Settings from "./features/settings/components/Settings";
 
 const Layout = ({backgroundColor = '#ffffff', children}: {backgroundColor: string, children: ReactNode}): JSX.Element => (
   <div style={{backgroundColor}} className="flex flex-grow">
@@ -175,6 +180,78 @@ const AppRouter: FC = () => {
           <ProtectedRoute>
             <Layout backgroundColor="#ffffff">
               <Gigs type="search"/>
+            </Layout>
+          </ProtectedRoute>
+        </Suspense>
+      )
+    },
+    {
+      path: '/inbox',
+      element: (
+        <Suspense>
+          <ProtectedRoute>
+            <Layout backgroundColor="#ffffff">
+              <Chat/>
+            </Layout>
+          </ProtectedRoute>
+        </Suspense>
+      )
+    },
+    {
+      path: '/inbox/:username/:conversationId',
+      element: (
+        <Suspense>
+          <ProtectedRoute>
+            <Layout backgroundColor="#ffffff">
+              <Chat/>
+            </Layout>
+          </ProtectedRoute>
+        </Suspense>
+      )
+    },
+    {
+      path: '/gig/checkout/:gigId',
+      element: (
+        <Suspense>
+          <ProtectedRoute>
+            <Layout backgroundColor="#ffffff">
+              <Checkout />
+            </Layout>
+          </ProtectedRoute>
+        </Suspense>
+      )
+    },
+    {
+      path: '/gig/order/requirement/:gigId',
+      element: (
+        <Suspense>
+          <ProtectedRoute>
+            <Layout backgroundColor="#ffffff">
+              <Requirement />
+            </Layout>
+          </ProtectedRoute>
+        </Suspense>
+      )
+    },
+    {
+      path: '/orders/:orderId/activities',
+      element: (
+        <Suspense>
+          <ProtectedRoute>
+            <Layout backgroundColor="#f5f5f5">
+              <Order />
+            </Layout>
+          </ProtectedRoute>
+        </Suspense>
+      )
+    },
+    {
+      path: '/:username/edit',
+      element: (
+        <Suspense>
+          <ProtectedRoute>
+            <Layout backgroundColor="#f5f5f5">
+              <Settings />
             </Layout>
           </ProtectedRoute>
         </Suspense>

@@ -1,5 +1,4 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
-import { ToolkitStore } from '@reduxjs/toolkit/dist/configureStore';
 import { setupListeners } from '@reduxjs/toolkit/query';
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
 import { Reducer } from 'redux';
@@ -9,9 +8,9 @@ import authReducer from 'src/features/auth/reducers/auth.reducer';
 import logoutReducer from 'src/features/auth/reducers/logout.reducer';
 import buyerReducer from 'src/features/buyer/reducers/buyer.reducer';
 import sellerReducer from 'src/features/sellers/reducers/seller.reducer';
-// import categoryReducer from 'src/shared/header/reducers/category.reducer';
-// import headerReducer from 'src/shared/header/reducers/header.reducer';
-// import notificationReducer from 'src/shared/header/reducers/notification.reducer';
+import categoryReducer from 'src/shared/header/reducers/category.reducer';
+import headerReducer from 'src/shared/header/reducers/header.reducer';
+import notificationReducer from 'src/shared/header/reducers/notification.reducer';
 
 import { api } from './api';
 
@@ -27,9 +26,9 @@ export const combineReducer = combineReducers({
   logout: logoutReducer,
   buyer: buyerReducer,
   seller: sellerReducer,
-  // header: headerReducer,
-  // showCategoryContainer: categoryReducer,
-  // notification: notificationReducer
+  header: headerReducer,
+  showCategoryContainer: categoryReducer,
+  notification: notificationReducer
 });
 
 export const rootReducers: Reducer<RootState> = (state, action) => {
@@ -42,7 +41,7 @@ export const rootReducers: Reducer<RootState> = (state, action) => {
 
 const persistedReducer = persistReducer(persistConfig, rootReducers);
 
-export const store: ToolkitStore = configureStore({
+export const store: any = configureStore({
   devTools: true,
   reducer: persistedReducer,
   middleware: (getDefaultMiddleware) =>

@@ -1,3 +1,4 @@
+
 import { Transition } from '@headlessui/react';
 import { filter, find } from 'lodash';
 import { FC, ReactElement, useEffect, useRef, useState } from 'react';
@@ -5,15 +6,15 @@ import { FaAngleLeft, FaAngleRight, FaBars, FaRegBell, FaRegEnvelope, FaTimes } 
 import { Link } from 'react-router-dom';
 import { addAuthUser } from 'src/features/auth/reducers/auth.reducer';
 import { useResendEmailMutation } from 'src/features/auth/services/auth.service';
-// import { IMessageDocument } from 'src/features/chat/interfaces/chat.interface';
+import { IMessageDocument } from 'src/features/chat/interfaces/chat.interface';
 import { IOrderNotifcation } from 'src/features/order/interfaces/order.interface';
-// import { useGetNotificationsByIdQuery } from 'src/features/order/services/notification.service';
+import { useGetNotificationsByIdQuery } from 'src/features/order/services/notification.service';
 import Banner from 'src/shared/banner/Banner';
 import Button from 'src/shared/button/Button';
 import useDetectOutsideClick from 'src/shared/hooks/useDetectOutsideClick';
 import { IResponse } from 'src/shared/shared.interface';
 import { categories, replaceSpacesWithDash, showErrorToast, showSuccessToast } from 'src/shared/utils/utils.service';
-// import { socket, socketService } from 'src/sockets/socket.service';
+import { socket, socketService } from 'src/sockets/socket.service';
 import { useAppDispatch, useAppSelector } from 'src/store/store';
 import { IReduxState } from 'src/store/store.interface';
 import { v4 as uuidv4 } from 'uuid';
@@ -23,11 +24,11 @@ import { updateCategoryContainer } from '../reducers/category.reducer';
 import { updateHeader } from '../reducers/header.reducer';
 import { updateNotification } from '../reducers/notification.reducer';
 import HeaderSearchInput from './HeaderSearchInput';
-// import MessageDropdown from './MessageDropdown';
-// import HomeHeaderSideBar from './mobile/HomeHeaderSideBar';
-// import MobileHeaderSearchInput from './mobile/MobileHeaderSearchInput';
-// import NotificationDropdown from './NotificationDropdown';
-// import OrderDropdown from './OrderDropdown';
+import MessageDropdown from './MessageDropdown';
+import HomeHeaderSideBar from './mobile/HomeHeaderSideBar';
+import MobileHeaderSearchInput from './mobile/MobileHeaderSearchInput';
+import NotificationDropdown from './NotificationDropdown';
+import OrderDropdown from './OrderDropdown';
 import SettingsDropdown from './SettingsDropdown';
 
 const HomeHeader: FC<IHomeHeaderProps> = ({ showCategoryContainer }): ReactElement => {
@@ -35,7 +36,7 @@ const HomeHeader: FC<IHomeHeaderProps> = ({ showCategoryContainer }): ReactEleme
   const seller = useAppSelector((state: IReduxState) => state.seller);
   const logout = useAppSelector((state: IReduxState) => state.logout);
   const buyer = useAppSelector((state: IReduxState) => state.buyer);
-  // const notification = useAppSelector((state: IReduxState) => state.notification);
+  const notification = useAppSelector((state: IReduxState) => state.notification);
   const settingsDropdownRef = useRef<HTMLDivElement | null>(null);
   const messageDropdownRef = useRef<HTMLDivElement | null>(null);
   const notificationDropdownRef = useRef<HTMLDivElement | null>(null);
@@ -44,7 +45,7 @@ const HomeHeader: FC<IHomeHeaderProps> = ({ showCategoryContainer }): ReactEleme
   const [openSidebar, setOpenSidebar] = useState<boolean>(false);
   const [authUsername, setAuthUsername] = useState<string>('');
   const dispatch = useAppDispatch();
-  // const { data, isSuccess } = useGetNotificationsByIdQuery(`${authUser.username}`, { refetchOnMountOrArgChange: true });
+  const { data, isSuccess } = useGetNotificationsByIdQuery(`${authUser.username}`, { refetchOnMountOrArgChange: true });
   const [resendEmail] = useResendEmailMutation();
 
   const [isSettingsDropdown, setIsSettingsDropdown] = useDetectOutsideClick(settingsDropdownRef, false);
@@ -110,42 +111,42 @@ const HomeHeader: FC<IHomeHeaderProps> = ({ showCategoryContainer }): ReactEleme
     }
   };
 
-  // useEffect(() => {
-  //   socketService.setupSocketConnection();
-  //   socket.emit('getLoggedInUsers', '');
-  //   if (isSuccess) {
-  //     const list: IOrderNotifcation[] = filter(
-  //       data.notifications,
-  //       (item: IOrderNotifcation) => !item.isRead && item.userTo === authUser?.username
-  //     );
-  //     dispatch(updateNotification({ hasUnreadNotification: list.length > 0 }));
-  //   }
-  // }, [isSuccess, authUser.username, data?.notifications, dispatch]);
+  useEffect(() => {
+    socketService.setupSocketConnection();
+    socket.emit('getLoggedInUsers', '');
+    if (isSuccess) {
+      const list: IOrderNotifcation[] = filter(
+        data.notifications,
+        (item: IOrderNotifcation) => !item.isRead && item.userTo === authUser?.username
+      );
+      dispatch(updateNotification({ hasUnreadNotification: list.length > 0 }));
+    }
+  }, [isSuccess, authUser.username, data?.notifications, dispatch]);
 
-  // useEffect(() => {
-  //   socket.on('message received', (data: IMessageDocument) => {
-  //     // only for receiver
-  //     if (data.receiverUsername === `${authUser.username}` && !data.isRead) {
-  //       dispatch(updateNotification({ hasUnreadMessage: true }));
-  //     }
-  //   });
+  useEffect(() => {
+    socket.on('message received', (data: IMessageDocument) => {
+      // only for receiver
+      if (data.receiverUsername === `${authUser.username}` && !data.isRead) {
+        dispatch(updateNotification({ hasUnreadMessage: true }));
+      }
+    });
 
-  //   socket.on('order notification', (_, data: IOrderNotifcation) => {
-  //     // only for receiver
-  //     if (data.userTo === `${authUser.username}` && !data.isRead) {
-  //       dispatch(updateNotification({ hasUnreadNotification: true }));
-  //     }
-  //   });
+    socket.on('order notification', (_: any, data: IOrderNotifcation) => {
+      // only for receiver
+      if (data.userTo === `${authUser.username}` && !data.isRead) {
+        dispatch(updateNotification({ hasUnreadNotification: true }));
+      }
+    });
 
-  //   socket.on('online', (data: string[]) => {
-  //     const username = find(data, (name: string) => name === authUser.username);
-  //     setAuthUsername(`${username}`);
-  //   });
-  // }, [authUser.username, dispatch]);
+    socket.on('online', (data: string[]) => {
+      const username = find(data, (name: string) => name === authUser.username);
+      setAuthUsername(`${username}`);
+    });
+  }, [authUser.username, dispatch]);
 
   return (
     <>
-      {/* {openSidebar && <HomeHeaderSideBar setOpenSidebar={setOpenSidebar} />} */}
+      {openSidebar && <HomeHeaderSideBar setOpenSidebar={setOpenSidebar} />}
       <header>
         <nav className="navbar peer-checked:navbar-active relative z-[120] w-full border-b bg-white shadow-2xl shadow-gray-600/5 backdrop-blur dark:shadow-none">
           {!logout && authUser && !authUser.emailVerified && (
@@ -184,7 +185,7 @@ const HomeHeader: FC<IHomeHeaderProps> = ({ showCategoryContainer }): ReactEleme
                     <HeaderSearchInput />
                   </div>
                 </div>
-                {/* <MobileHeaderSearchInput setOpenSidebar={setOpenSidebar} /> */}
+                <MobileHeaderSearchInput setOpenSidebar={setOpenSidebar} />
               </div>
               <div className="navmenu mb-16 hidden w-full cursor-pointer flex-wrap items-center justify-end space-y-8 rounded-3xl border border-gray-100 bg-white p-6 shadow-2xl md:flex-nowrap lg:m-0 lg:flex lg:w-6/12 lg:space-y-0 lg:border-0 lg:bg-transparent lg:p-0 lg:shadow-none">
                 <div className="text-[#74767e] lg:pr-4">
@@ -196,9 +197,9 @@ const HomeHeader: FC<IHomeHeaderProps> = ({ showCategoryContainer }): ReactEleme
                         label={
                           <>
                             <FaRegBell />
-                            {/* {notification && notification.hasUnreadNotification && (
+                            {notification && notification.hasUnreadNotification && (
                               <span className="absolute -top-0 right-0 mr-3 inline-flex h-[6px] w-[6px] items-center justify-center rounded-full bg-[#ff62ab]"></span>
-                            )} */}
+                            )}
                           </>
                         }
                       />
@@ -213,7 +214,7 @@ const HomeHeader: FC<IHomeHeaderProps> = ({ showCategoryContainer }): ReactEleme
                         leaveTo="opacity-0 translate-y-1"
                       >
                         <div className="absolute right-0 mt-5 w-96">
-                          {/* <NotificationDropdown setIsNotificationDropdownOpen={setIsNotificationDropdownOpen} /> */}
+                          <NotificationDropdown setIsNotificationDropdownOpen={setIsNotificationDropdownOpen} />
                         </div>
                       </Transition>
                     </li>
@@ -224,9 +225,9 @@ const HomeHeader: FC<IHomeHeaderProps> = ({ showCategoryContainer }): ReactEleme
                         label={
                           <>
                             <FaRegEnvelope />
-                            {/* {notification && notification.hasUnreadMessage && (
+                            {notification && notification.hasUnreadMessage && (
                               <span className="absolute -top-1 right-0 mr-2 inline-flex h-[6px] w-[6px] items-center justify-center rounded-full bg-[#ff62ab]"></span>
-                            )} */}
+                            )}
                           </>
                         }
                       />
@@ -241,7 +242,7 @@ const HomeHeader: FC<IHomeHeaderProps> = ({ showCategoryContainer }): ReactEleme
                         leaveTo="opacity-0 translate-y-1"
                       >
                         <div className="absolute right-0 mt-5 w-96">
-                          {/* <MessageDropdown setIsMessageDropdownOpen={setIsMessageDropdownOpen} /> */}
+                          <MessageDropdown setIsMessageDropdownOpen={setIsMessageDropdownOpen} />
                         </div>
                       </Transition>
                     </li>
@@ -265,7 +266,7 @@ const HomeHeader: FC<IHomeHeaderProps> = ({ showCategoryContainer }): ReactEleme
                         leaveTo="opacity-0 translate-y-1"
                       >
                         <div className="absolute right-0 mt-5 w-96">
-                          {/* <OrderDropdown buyer={buyer} setIsOrderDropdownOpen={setIsOrderDropdownOpen} /> */}
+                          <OrderDropdown buyer={buyer} setIsOrderDropdownOpen={setIsOrderDropdownOpen} />
                         </div>
                       </Transition>
                     </li>

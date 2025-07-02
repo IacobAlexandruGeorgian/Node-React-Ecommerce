@@ -1,4 +1,5 @@
 import { ChangeEvent, FC, ReactElement, useState } from 'react';
+import { useDeviceData, useMobileOrientation } from 'react-device-detect';
 import { FaEye, FaEyeSlash, FaTimes } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 import Alert from 'src/shared/alert/Alert';
@@ -20,11 +21,15 @@ import { loginUserSchema } from '../schemes/auth.schema';
 import { useSignInMutation } from '../services/auth.service';
 
 const LoginModal: FC<IModalBgProps> = ({ onClose, onToggle, onTogglePassword }): ReactElement => {
+  const mobileOrientation = useMobileOrientation();
+  const deviceData = useDeviceData(window.navigator.userAgent);
   const [alertMessage, setAlertMessage] = useState<string>('');
   const [passwordType, setPasswordType] = useState<string>('password');
   const [userInfo, setUserInfo] = useState<ISignInPayload>({
     username: '',
     password: '',
+    browserName: deviceData.browser.name,
+    deviceType: mobileOrientation.isLandscape ? 'browser' : 'mobile'
   });
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
@@ -36,12 +41,16 @@ const LoginModal: FC<IModalBgProps> = ({ onClose, onToggle, onTogglePassword }):
       const isValid: boolean = await schemaValidation();
       if (isValid) {
         const result: IResponse = await signIn(userInfo).unwrap();
-        setAlertMessage('');
-        dispatch(addAuthUser({ authInfo: result.user }));
-        dispatch(updateLogout(false));
-        dispatch(updateHeader('home'));
-        dispatch(updateCategoryContainer(true));
-        saveToSessionStorage(JSON.stringify(true), JSON.stringify(result.user?.username));
+        if (result && (result.browserName || result.deviceType)) {
+          navigate('/verify_otp');
+        } else {
+          setAlertMessage('');
+          dispatch(addAuthUser({ authInfo: result.user }));
+          dispatch(updateLogout(false));
+          dispatch(updateHeader('home'));
+          dispatch(updateCategoryContainer(true));
+          saveToSessionStorage(JSON.stringify(true), JSON.stringify(result.user?.username));
+        }
       }
     } catch (error) {
       setAlertMessage(error?.data.message);

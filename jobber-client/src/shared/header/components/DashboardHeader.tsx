@@ -6,7 +6,7 @@ import { LazyLoadImage } from 'react-lazy-load-image-component';
 import { Link } from 'react-router-dom';
 import Button from 'src/shared/button/Button';
 import { lowerCase } from 'src/shared/utils/utils.service';
-// import { socket, socketService } from 'src/sockets/socket.service';
+import { socket, socketService } from 'src/sockets/socket.service';
 import { useAppSelector } from 'src/store/store';
 import { IReduxState } from 'src/store/store.interface';
 
@@ -21,14 +21,14 @@ const DashboardHeader: FC = (): ReactElement => {
   const [authUsername, setAuthUsername] = useState<string>('');
   const [openSidebar, setOpenSidebar] = useState<boolean>(false);
 
-  // useEffect(() => {
-  //   socketService.setupSocketConnection();
-  //   socket.emit('getLoggedInUsers', '');
-  //   socket.on('online', (data: string[]) => {
-  //     const username = find(data, (name: string) => name === authUser.username);
-  //     setAuthUsername(`${username}`);
-  //   });
-  // }, [authUser.username]);
+  useEffect(() => {
+    socketService.setupSocketConnection();
+    socket.emit('getLoggedInUsers', '');
+    socket.on('online', (data: string[]) => {
+      const username = find(data, (name: string) => name === authUser.username);
+      setAuthUsername(`${username}`);
+    });
+  }, [authUser.username]);
 
   return (
     <>

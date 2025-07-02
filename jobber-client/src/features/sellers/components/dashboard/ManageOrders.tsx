@@ -3,7 +3,7 @@ import { FC, ReactElement, useEffect, useMemo, useState } from 'react';
 import { useOutletContext } from 'react-router-dom';
 import { IOrderDocument } from 'src/features/order/interfaces/order.interface';
 import { orderTypes, sellerOrderList, shortenLargeNumbers } from 'src/shared/utils/utils.service';
-// import { socket } from 'src/sockets/socket.service';
+import { socket } from 'src/sockets/socket.service';
 
 import { SellerContextType } from '../../interfaces/seller.interface';
 import ManageOrdersTable from './components/ManageOrdersTable';
@@ -21,14 +21,14 @@ const ManageOrders: FC = (): ReactElement => {
   const { orders } = useOutletContext<SellerContextType>();
   const ordersRef = useMemo(() => [...orders], [orders]);
 
-  // useEffect(() => {
-  //   socket.on('order notification', (order: IOrderDocument) => {
-  //     const index = findIndex(ordersRef, ['orderId', order.orderId]);
-  //     if (index > -1) {
-  //       ordersRef.splice(index, 1, order);
-  //     }
-  //   });
-  // }, [ordersRef]);
+  useEffect(() => {
+    socket.on('order notification', (order: IOrderDocument) => {
+      const index = findIndex(ordersRef, ['orderId', order.orderId]);
+      if (index > -1) {
+        ordersRef.splice(index, 1, order);
+      }
+    });
+  }, [ordersRef]);
 
   return (
     <div className="container mx-auto mt-8 px-6 md:px-12 lg:px-6">

@@ -60,7 +60,7 @@ const CurrentSellerProfile: FC = (): ReactElement => {
   return (
     <div className="relative w-full pb-6">
       <Breadcrumb breadCrumbItems={['Seller', `${seller.username}`]} />
-      {isLoading ? (
+      {isLoading || isDataLoading ? (
         <CircularPageLoader />
       ) : (
         <div className="container mx-auto px-2 md:px-0">
