@@ -13,7 +13,7 @@ Details about the projects:
 - docker
 - kubernetes
 
-The projects contains:
+The project contains:
 - microservices (gateway, notification, auth, users, gig, chat, order, review)
 - custom npm package who is shared between microservices
 - Payment (stripe)
