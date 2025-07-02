@@ -1,4 +1,4 @@
-Details about the projects:
+Details about the project:
 - typescipt
 - node 10
 - react 19
